@@ -5,13 +5,13 @@ from PIL import Image
 from os.path import join
 import sys
 sys.path.append('data')
-from data.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
 import os
 import pickle
 import json
 import sys
 # sys.path.insert(0, os.path.abspath('/home/abavaresco/ads/ads_snellius/scripts'))
-from utils import ModOutputs
+from bert_utils import ModOutputs
 from lavis.models import load_model_and_preprocess, load_model
 
 dataset = 'ours' # can be either original or trade

@@ -5,11 +5,11 @@ import torch
 import pandas as pd
 import sys
 sys.path.append('data')
-from data.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
 from os.path import join
 import json
 import pickle
-from utils import ModOutputs
+from bert_utils import ModOutputs
 
 dataset = 'ours' # can be either original or trade
 subset = 'wrong' # used only on test set
@@ -41,7 +41,7 @@ if dataset=='original':
             outputs = model(**inputs.to(device))
             im_dict['logits'] = outputs.logits_per_image.flatten().detach().cpu().numpy()
             im_dict['image_embedding'] = outputs['image_embeds'].detach().cpu().numpy()
-            im_dict['text_embedding'] = outputs['image_embeds'].detach().cpu().numpy()
+            im_dict['text_embedding'] = outputs['text_embeds'].detach().cpu().numpy()
             im_dict['sentences'] = ar_dict[k]
             ret_dict[k] = im_dict
 
@@ -69,7 +69,7 @@ elif dataset=='trade':
             outputs = model(**inputs.to(device))
             im_dict['logits'] = outputs.logits_per_image.flatten().detach().cpu().numpy()
             im_dict['image_embedding'] = outputs['image_embeds'].detach().cpu().numpy()
-            im_dict['text_embedding'] = outputs['image_embeds'].detach().cpu().numpy()
+            im_dict['text_embedding'] = outputs['text_embeds'].detach().cpu().numpy()
             im_dict['sentences'] = texts
             ret_dict[df.image_path[i]] = im_dict
             
@@ -78,7 +78,7 @@ elif dataset=='trade':
                 'model_component': ['logits_per_image', 'image_embeddings', 'text_embeddings'],
                 'embedding_type': embedding_type}
 
-    align_outs = ModOutputs(config=config_dict, outputs=ret_dict)
+    align_outs = {'config' : config_dict, 'emb_dict': ret_dict}
 
     model_name = model_name.split('/')[-1]
     pickle.dump(align_outs, open(join(OUTPUT_DIR,'align', f'{model_name}_{embedding_type}.pkl'), "wb"))

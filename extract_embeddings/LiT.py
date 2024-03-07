@@ -12,7 +12,7 @@ import torch
 from vit_jax import models
 import pandas as pd
 import json
-from data.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
 
 model_name = 'LiT-L16L'
 
