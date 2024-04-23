@@ -5,15 +5,15 @@ import torch
 import pandas as pd
 import sys
 sys.path.append('data')
-from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH, OUTPUT_FOLDER
 from os.path import join
 import json
 import pickle
-from bert_utils import ModOutputs
+# from bert_utils import ModOutputs
 
 dataset = 'ours' # can be either original or trade
 subset = 'wrong' # used only on test set
-OUTPUT_DIR = join(MAIN_DIR_PATH, 'data/model_outputs')
+
 model_name = "kakaobrain/align-base"
 
 
@@ -49,15 +49,15 @@ if dataset=='original':
                 'model_component': 'logits_per_image',
                 'embedding_type': embedding_type}
 
-    align_outs = ModOutputs(config=config_dict, outputs=ret_dict)
+    align_outs = {'config':config_dict, 'emb_dict':ret_dict}
 
     model_name = model_name.split('/')[-1]
-    pickle.dump(align_outs, open(join(OUTPUT_DIR,'align', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(align_outs, open(join(OUTPUT_FOLDER,'align', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 elif dataset=='trade':
 
     embedding_type = f'align_score_trade'
-    df = pd.read_csv(join(OUTPUT_DIR, 'aggregated_annotations.csv'))
+    df = pd.read_csv(join(OUTPUT_FOLDER, 'aggregated_annotations.csv'))
     ret_dict = {}
     
     with torch.no_grad():
@@ -81,7 +81,7 @@ elif dataset=='trade':
     align_outs = {'config' : config_dict, 'emb_dict': ret_dict}
 
     model_name = model_name.split('/')[-1]
-    pickle.dump(align_outs, open(join(OUTPUT_DIR,'align', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(align_outs, open(join(OUTPUT_FOLDER,'align', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 else:
     print('There was an error :(')

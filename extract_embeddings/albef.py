@@ -3,21 +3,17 @@ import torch.nn.functional as F
 import pandas as pd
 from PIL import Image
 from os.path import join
-import sys
-sys.path.append('data')
-from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH, OUTPUT_FOLDER
 import os
 import pickle
 import json
-import sys
-# sys.path.insert(0, os.path.abspath('/home/abavaresco/ads/ads_snellius/scripts'))
-from bert_utils import ModOutputs
+# from bert_utils import ModOutputs
 from lavis.models import load_model_and_preprocess, load_model
 
 dataset = 'ours' # can be either original or trade
 subset = 'right' # can be right or wrong, used only on test set
-OUTPUT_DIR = '/home/abavaresco/ads/ads_snellius/data/outputs'
-IM_FOLDER_PATH = '/home/abavaresco/ads/images'
+
+
 model_name = "albef_retrieval"
 model_type = "flickr"
 
@@ -65,15 +61,15 @@ if dataset=='original':
                 'temperature': model.temp.detach().cpu().numpy(),
                 'embedding_type': embedding_type}
 
-    albef_outs = ModOutputs(config=config_dict, outputs=ret_dict)
+    albef_outs = {'config':config_dict, 'emb_dict':ret_dict}
 
     model_name = model_name.split('/')[-1]
-    pickle.dump(albef_outs, open(join(OUTPUT_DIR,'albef', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(albef_outs, open(join(OUTPUT_FOLDER,'albef', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 elif dataset=='trade':
 
     embedding_type = f'albef_score_trade'
-    df = pd.read_csv(join(OUTPUT_DIR, 'aggregated_annotations.csv'))
+    df = pd.read_csv(join(OUTPUT_FOLDER, 'TRADE.csv'))
     ret_dict = {}
     
     with torch.no_grad():
@@ -101,10 +97,10 @@ elif dataset=='trade':
                 'temperature': model.temp.detach().cpu().numpy(),
                 'embedding_type': embedding_type}
 
-    albef_outs = ModOutputs(config=config_dict, outputs=ret_dict)
+    albef_outs = {'config': config_dict, 'emb_dict':ret_dict}
 
     model_name = model_name.split('/')[-1]
-    pickle.dump(albef_outs, open(join(OUTPUT_DIR,'albef', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(albef_outs, open(join(OUTPUT_FOLDER,'albef', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 else:
     print('There was an error :(')

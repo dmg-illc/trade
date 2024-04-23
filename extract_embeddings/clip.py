@@ -2,18 +2,16 @@ from PIL import Image
 import requests
 import json
 from os.path import join
-from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH
+from src.paths import MAIN_DIR_PATH, IM_FOLDER_PATH, OUTPUT_FOLDER
 from transformers import CLIPProcessor, CLIPModel
 import torch
 import pandas as pd
-from bert_utils import *
+# from bert_utils import *
 import pickle
 
 
 dataset = 'ours' # can be either original or ours
 subset = 'wrong' # used only on test set
-OUTPUT_DIR = '/home/abavaresco/ads/ads_snellius/data/outputs'
-IM_FOLDER_PATH = '/home/abavaresco/ads/images'
 model_name = "openai/clip-vit-large-patch14-336"
 
 
@@ -27,7 +25,7 @@ if dataset=='original':
 
     embedding_type = f'clip_score_test_{subset}'
 
-    with open(join(OUTPUT_DIR, f'test_{subset}.json'), 'r') as my_file:
+    with open(join(OUTPUT_FOLDER, f'test_{subset}.json'), 'r') as my_file:
         ar_data=my_file.read()
     ar_dict = json.loads(ar_data)
 
@@ -51,15 +49,15 @@ if dataset=='original':
                 'model_component': 'logits_per_image',
                 'embedding_type': embedding_type}
 
-    clip_outs = ModOutputs(config=config_dict, outputs=ret_dict)
+    clip_outs = {'config':config_dict, 'emb_dict':ret_dict}
 
     model_name = model_name.split('/')[-1]
-    pickle.dump(clip_outs, open(join(OUTPUT_DIR,'clip', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(clip_outs, open(join(OUTPUT_FOLDER,'clip', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 elif dataset=='ours':
 
     embedding_type = f'clip_score_our_dataset'
-    df = pd.read_csv(join(OUTPUT_DIR, 'aggregated_annotations.csv'))
+    df = pd.read_csv(join(OUTPUT_FOLDER, 'aggregated_annotations.csv'))
     ret_dict = {}
     
     with torch.no_grad():
@@ -83,7 +81,7 @@ elif dataset=='ours':
 
     clip_outs = {'config' : config_dict, 'emb_dict': ret_dict}
     model_name = model_name.split('/')[-1]
-    pickle.dump(clip_outs, open(join(OUTPUT_DIR,'clip', f'{model_name}_{embedding_type}.pkl'), "wb"))
+    pickle.dump(clip_outs, open(join(OUTPUT_FOLDER,'clip', f'{model_name}_{embedding_type}.pkl'), "wb"))
 
 else:
     print('There was an error :(')
