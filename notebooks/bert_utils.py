@@ -1,7 +1,7 @@
 import numpy as np
 
 
-class ModOutputs:
+class SentenceEmbeddings:
     def __init__(self, config: dict, outputs: dict):
         '''
             config is a dict with the following keys:

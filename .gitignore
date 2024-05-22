@@ -1,5 +1,7 @@
 # Private files and paths
-data/paths.py
+data/model_outputs/det2/*
+data/model_outputs/mpnet/*
+data/model_outputs/blip2/*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

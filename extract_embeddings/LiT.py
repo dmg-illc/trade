@@ -30,7 +30,7 @@ pp = lit_model.get_pp()
 class pitts_ads_dataset():
     def __init__(self, df, img_folder):
         # Initialize image paths and corresponding texts
-        image_paths = [os.path.join(img_folder, path) for path in list(df.image_path)]
+        image_paths = [img_folder / path for path in list(df.image_path)]
         self.images = [Image.open(path).convert('RGB') for path in image_paths]
 
 
@@ -44,7 +44,7 @@ class pitts_ads_dataset():
         return img
     
 
-df = pd.read_csv(join(MAIN_DIR_PATH, 'data/TRADE.csv'))
+df = pd.read_csv(MAIN_DIR_PATH / 'data/TRADE.csv')
 dataset = pitts_ads_dataset(df, IM_FOLDER_PATH)
 
 processed_images = image_preprocessing(dataset.images)
@@ -68,4 +68,4 @@ torch.save({'images' : torch.tensor(np.array(zimg)),
             'dist2': torch.tensor(np.array(zd2)),
             'model_checkpoint': 'LiT-L16L',
             'temperature': torch.tensor(np.array(lit_variables['params']['t']))},
-           join(MAIN_DIR_PATH,'data/model_outputs/lit_outputs_trade'))
+           MAIN_DIR_PATH / 'data/model_outputs/lit_outputs_trade')
