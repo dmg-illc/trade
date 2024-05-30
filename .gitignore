@@ -2,6 +2,7 @@
 # data/model_outputs/det2/*
 data/model_outputs/mpnet/*
 # data/model_outputs/blip2/*
+.DS_Store
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
