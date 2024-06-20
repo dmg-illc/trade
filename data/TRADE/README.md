@@ -1,13 +1,13 @@
 # TRADE
 
-The TRADE dataset is stored in `TRADE.csv`. The file contains the following columns:
+The TRADE dataset is stored in `TRADE.csv` (publicly available [here](https://zenodo.org/records/11355892)). The file contains the following columns:
 * `image`: an ID identifying the ad image
 * `distractor_1`: non-mathing explanation for the ad (hard negative)
 * `distractor_2`: non-mathing explanation for the ad (hard negative)
 * `matching_explanation`: mathing explanation for the ad as initially introduced in the [Pitt Ads Dataset](https://people.cs.pitt.edu/~mzhang/visualization/dataset/)
 * `image_url`: URL of the image as released by the curators of the [Pitt Ads Dataset](https://people.cs.pitt.edu/~mzhang/visualization/dataset/)
 
-The distractor-row indices necessary to construct the 10 different splits of TRADE-control starting from TRADE are stored in `trade_control.json`. The numbers listed within the keys `dist_1` and `dist_2` correspond to the row indexes of the column `matching_explanation` in `TRADE.csv`. Here is an example of how to derive TRADE-control's `split_1` from TRADE:
+The distractor-row indices necessary to construct the 10 different splits of TRADE-control starting from TRADE are stored in `trade_control.json` (also available [here](https://zenodo.org/records/11355892)). The numbers listed within the keys `dist_1` and `dist_2` correspond to the row indexes of the column `matching_explanation` in `TRADE.csv`. Here is an example of how to derive TRADE-control's `split_1` from TRADE:
 
 ```
 trade = pd.read_csv('TRADE.csv')
