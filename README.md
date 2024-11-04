@@ -3,7 +3,7 @@
 This is the GitHub Repository for the paper [_Don’t Buy it! Reassessing the Ad Understanding Abilities
 of Contrastive Multimodal Models_](https://aclanthology.org/2024.acl-short.77/) (A. Bavaresco, A. Testoni, R. Fernández), to appear at ACL 2024.
 
-TRADE and TRADE-control are publicly available at: https://zenodo.org/records/11355892
+TRADE and TRADE-control are publicly available at: [https://zenodo.org/records/11355892](https://zenodo.org/records/14035290)
 
 ## Pitt Ads Images
 
